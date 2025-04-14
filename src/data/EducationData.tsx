@@ -1,16 +1,15 @@
 export const educationInfo = [
-  /*{
-      imageURL: "MonmouthLogo.jpg",
-      date: "Jan. 2025 - Present",
-      title: "Monmouth University",
-      role: "Fourth Semester",
-      description: [
-        "Currently taking multiple senior-level courses such as:",
-        "Computer Networks",
-        "Database Systems",
-        "Operating Syst. Analysis",
-      ],
-    },*/
+  {
+    imageURL: "MonmouthLogo.jpg",
+    date: "Jan. 2025 - May. 2025",
+    title: "Monmouth University",
+    role: "Fourth Semester",
+    description: [
+      "Computer Networks",
+      "Database Systems",
+      "Operating Syst. Analysis",
+    ],
+  },
   {
     imageURL: "MonmouthLogo.jpg",
     date: "Sept. 2024 - Dec. 2024",

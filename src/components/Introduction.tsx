@@ -1,4 +1,4 @@
-export default function Introduction() {
+function Introduction() {
   return (
     <>
       <img
@@ -12,25 +12,19 @@ export default function Introduction() {
         <h1 className="text-5xl font-semibold">Hi, Justin here 👋</h1>
         <p className="mt-4 font-light">
           {new Date().getFullYear() - 2005}
-          -year-old software engineer studying at Monmouth University
+          -year-old computer scientist studying at Monmouth University
         </p>
         <p className="mt-2 font-light">
-          My primary focus is backend development, where I work with Java and
-          C++, but I'm always open to exploring other areas of software
-          engineering.
+          My focus is in fullstack application development where I work
+          primarily with React, Java, and SQL.
         </p>
         <p className="mt-2 font-light">
-          I enjoy the challenge of debugging, finding satisfaction in the
-          understanding and solving of complex issues.
+          I am currently persuing my minor in both Cybersecurity and
+          Mathematics.
         </p>
       </div>
     </>
   );
 }
 
-/*
-        <p className="mt-2 font-light">
-          I like to create projects, play video games, and build pretty awesome
-          websites. Here, take a look:
-        </p>
-        */
+export default Introduction;

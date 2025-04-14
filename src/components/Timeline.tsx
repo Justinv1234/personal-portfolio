@@ -2,7 +2,10 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { educationInfo } from "../data/EducationData";
 import { experienceInfo } from "../data/ExperienceData";
 
-//Ok so whats goijng on is the data is stored in a seperate location that this script cant access import here to fix
+/*
+ * Currently the timeline information is stored statically inside
+ * seperate classes, this will soon be replaced by an SQL Plus Database.
+ */
 
 type InfoItem = {
   imageURL: string;
@@ -58,7 +61,7 @@ function TimelineFormatter({ information }: TimelineFormatterProps) {
   return timeline;
 }
 
-export default function Timeline() {
+function Timeline() {
   return (
     <>
       <Tabs.Root
@@ -99,3 +102,5 @@ export default function Timeline() {
     </>
   );
 }
+
+export default Timeline;

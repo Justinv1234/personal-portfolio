@@ -5,7 +5,7 @@ import {
   EnvelopeClosedIcon,
 } from "@radix-ui/react-icons";
 
-export default function Socials() {
+function Socials() {
   return (
     <>
       <Toolbar.Root
@@ -45,3 +45,5 @@ export default function Socials() {
     </>
   );
 }
+
+export default Socials;

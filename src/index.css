@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "@radix-ui/themes/styles.css";
+
+body {
+  background-color: #202020;
+  margin: 0;
+}

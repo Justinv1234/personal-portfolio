@@ -1,13 +1,12 @@
 export const experienceInfo = [
   {
     imageURL: "MonmouthLogo.jpg",
-    date: "Upcoming",
-    //date: "Jan. 2025 - Present",   ()
+    date: "Jan. 2025 - Present",
     title: "Guggenheim Memorial Library",
-    role: "Software Developer (Intern)",
+    role: "Library Systems Technician Intern",
     description: [
-      "Internship centered around optimizing the library's back-end systems and improving the user experience",
-      "Provide maintenance and further development on an already finished product",
+      "Developed automated software to automatically navigate through the library's database, detecting and reporting broken URLs",
+      "Built with non-technical users in mind, enabling seamless onboarding for staff and reducing dependency on IT support.",
     ],
   },
   {

@@ -4,9 +4,7 @@ interface FeaturedProjectsProps {
   featuredOnly: boolean;
 }
 
-export default function DisplayProjects({
-  featuredOnly,
-}: FeaturedProjectsProps) {
+function DisplayProjects({ featuredOnly }: FeaturedProjectsProps) {
   const mappedProjects = projectInfo
     .filter((info) => info.isFeatured || !featuredOnly)
     .map((info, index) => (
@@ -49,3 +47,5 @@ export default function DisplayProjects({
     </div>
   );
 }
+
+export default DisplayProjects;

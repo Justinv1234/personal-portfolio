@@ -3,15 +3,14 @@ export const projectInfo = [
     title: "Portfolio Website",
     websiteURL: "WebsiteImage.png",
     description:
-      "This is my current portfolio website created using React.js and Tailwind CSS that is currently hosted on Github Pages. Collects and stores data using Firebase and built dynamically for any device.",
+      "This is my current portfolio website created using React and hosted using AWS. Collects and stores data using MySQL and built dynamically for any device.",
     tags: [
       "HTML",
       "TypeScript",
-      "React.js",
+      "React",
       "Tailwind CSS",
-      "Github Pages",
+      "AWS",
       "Radix UI",
-      "Firebase",
     ],
     buttons: [
       {

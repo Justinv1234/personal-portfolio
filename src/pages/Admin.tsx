@@ -31,8 +31,20 @@ function Admin() {
   const [selectedDescriptionText, setSelectedDescriptionText] = useState("");
   const [deleteDescriptionMessage, setDeleteDescriptionMessage] = useState("");
 
+  const [feedbackList, setFeedbackList] = useState<FeedbackEntry[]>([]);
+
+  function fetchFeedbackMessages() {
+    fetch(
+      "https://3c3hpih46m4vefwbvzbequjgbm0kpexa.lambda-url.us-east-2.on.aws/"
+    )
+      .then((res) => res.json())
+      .then((data) => setFeedbackList(data))
+      .catch((err) => console.error("Error fetching feedback:", err));
+  }
+
   useEffect(() => {
     fetchExperiences();
+    fetchFeedbackMessages();
   }, []);
 
   if (!authenticated) {
@@ -49,16 +61,19 @@ function Admin() {
           className="bg-blue-500 text-white px-4 py-2 rounded-md"
           onClick={async () => {
             try {
-              const res = await fetch("https://qxdctpav24rqd2rr7bohe62oda0rpmaw.lambda-url.us-east-2.on.aws/", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ password: passwordInput }),
-              });
-  
+              const res = await fetch(
+                "https://qxdctpav24rqd2rr7bohe62oda0rpmaw.lambda-url.us-east-2.on.aws/",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ password: passwordInput }),
+                }
+              );
+
               const data = await res.json();
-  
+
               if (data.success) {
                 setAuthenticated(true);
               } else {
@@ -74,7 +89,7 @@ function Admin() {
         </button>
       </div>
     );
-  }  
+  }
 
   function fetchExperiences() {
     fetch(
@@ -191,10 +206,17 @@ function Admin() {
       });
   }
 
+  interface FeedbackEntry {
+    name: string;
+    email: string;
+    message: string;
+  }
+
   return (
     <div className="flex flex-col md:text-left text-center gap-8 p-8">
       <h1 className="text-5xl font-semibold">Admin Page</h1>
 
+      {/* Upload Description */}
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold">Upload Description</h2>
         <select
@@ -224,6 +246,7 @@ function Admin() {
         <h1 className="text-md text-gray-400">{uploadDescripMessage}</h1>
       </div>
 
+      {/* Upload Experience */}
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold">Upload Experience</h2>
         <input
@@ -280,6 +303,7 @@ function Admin() {
         <h1 className="text-md text-gray-400">{uploadExperienceMessage}</h1>
       </div>
 
+      {/* Delete Experience */}
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold">Delete Experience</h2>
         <select
@@ -304,9 +328,9 @@ function Admin() {
         <h1 className="text-md text-gray-400">{deleteExperienceMessage}</h1>
       </div>
 
+      {/* Delete Description */}
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold">Delete Description</h2>
-
         <select
           className="p-2 border rounded-md"
           value={selectedExperienceIDForDescription}
@@ -347,6 +371,34 @@ function Admin() {
         </button>
 
         <h1 className="text-md text-gray-400">{deleteDescriptionMessage}</h1>
+      </div>
+
+      {/* 🆕 Feedback Messages Section */}
+      <div className="flex flex-col gap-4 mt-12">
+        <h2 className="text-2xl font-semibold">Feedback Messages</h2>
+
+        {feedbackList.length === 0 ? (
+          <p className="text-gray-400">No messages submitted yet.</p>
+        ) : (
+          <div className="flex flex-col gap-4 max-h-[600px] overflow-y-auto">
+            {feedbackList.map((item, index) => (
+              <div
+                key={index}
+                className="rounded-md p-4 shadow border border-gray-700 bg-[#202020] text-white"
+              >
+                <div className="flex flex-col gap-1">
+                  <span className="text-lg font-semibold text-blue-400">
+                    {item.name}
+                  </span>
+                  <span className="text-sm text-gray-400">{item.email}</span>
+                  <p className="mt-2 whitespace-pre-wrap text-gray-200">
+                    {item.message}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

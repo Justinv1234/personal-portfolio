@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ProjectsPage from "./pages/ProjectsPage";
 import ProjectDetails from "./pages/ProjectDetailsPage";
+import ContactMePage from "./pages/ContactMePage";
 import NotFound from "./pages/NotFoundPage";
 import Layout from "./components/common/Layout";
 
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/:slug" element={<ProjectDetails />} />
+          <Route path="/contact-me" element={<ContactMePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

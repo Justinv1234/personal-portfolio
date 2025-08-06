@@ -20,7 +20,7 @@ const pool = new Pool({
 const projectsRoute = require("./routes/projects")(pool);
 const experienceRoute = require("./routes/experience")(pool);
 const educationRoute = require("./routes/education")(pool);
-const contactRoute = require("./routes/contact")
+const contactRoute = require("./routes/contact")(pool);
 
 app.use("/api/projects", projectsRoute);
 app.use("/api/experience", experienceRoute);

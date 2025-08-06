@@ -12,11 +12,11 @@ module.exports = (pool) => {
         }
     });
 
-    router.get("/projects/:slug", async (req, res) => {
+    router.get("/:slug", async (req, res) => {
         const { slug } = req.params;
 
         try {
-            const result = await req.pool.query("SELECT * FROM projects");
+            const result = await pool.query("SELECT * FROM projects");
             const projects = result.rows;
 
             const matchedProject = projects.find((project) => {

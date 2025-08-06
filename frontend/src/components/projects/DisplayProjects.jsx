@@ -25,7 +25,7 @@ function DisplayProjects({ featuredOnly }) {
   }, []);
 
   const filteredProjects = projects.filter(
-    (project) => project.isfeatured || !featuredOnly
+    (project) => project.is_featured || !featuredOnly
   );
 
   return (

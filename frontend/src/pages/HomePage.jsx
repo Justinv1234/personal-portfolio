@@ -20,7 +20,7 @@ function HomePage() {
         <h1 className="text-2xl text-center sm:text-3xl  sm:text-left">
           Featured Projects.
         </h1>
-        <DisplayProjects featuredOnly={true} />
+        <DisplayProjects featuredOnly={false} />
       </section>
     </main>
   );

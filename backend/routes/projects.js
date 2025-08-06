@@ -12,5 +12,31 @@ module.exports = (pool) => {
         }
     });
 
+    router.get("/projects/:slug", async (req, res) => {
+        const { slug } = req.params;
+
+        try {
+            const result = await req.pool.query("SELECT * FROM projects");
+            const projects = result.rows;
+
+            const matchedProject = projects.find((project) => {
+                const generatedSlug = project.title
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")
+                    .replace(/[^\w-]+/g, "");
+                return generatedSlug === slug;
+            });
+
+            if (!matchedProject) {
+                return res.status(404).json({ error: "Project not found" });
+            }
+
+            res.json(matchedProject);
+        } catch (err) {
+            console.error("Error fetching project by slug:", err);
+            res.status(500).json({ error: "Server error" });
+        }
+    });
+
     return router;
 };

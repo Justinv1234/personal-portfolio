@@ -1,15 +1,31 @@
-import { projectInfo } from "../../data/ProjectsData";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function DisplayProjects({ featuredOnly }) {
+  const [projects, setProjects] = useState([]);
+
   const slugify = (text) =>
     text
       .toLowerCase()
       .replace(/\s+/g, "-")
       .replace(/[^\w-]+/g, "");
 
-  const filteredProjects = projectInfo.filter(
-    (project) => project.isFeatured || !featuredOnly
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/projects");
+        const data = await res.json();
+        setProjects(data);
+      } catch (err) {
+        console.error("Failed to fetch projects:", err);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  const filteredProjects = projects.filter(
+    (project) => project.isfeatured || !featuredOnly
   );
 
   return (
@@ -21,7 +37,7 @@ function DisplayProjects({ featuredOnly }) {
               <div className="flex flex-col space-y-2.5 p-6">
                 <img
                   className="border border-gray-600 h-40 w-full object-cover object-top"
-                  src={project.websiteURL}
+                  src={project.image_urls[0]}
                   alt={`${project.title} image`}
                 />
                 <h1 className="text-xl font-bold">{project.title}</h1>

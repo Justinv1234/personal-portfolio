@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function NotFound() {
+function NotFoundPage() {
   return (
     <div className="flex flex-col items-center justify-center text-center flex-grow h-full mt-20">
       <h1 className="text-8xl font-bold text-violet-400">404</h1>
@@ -17,4 +17,4 @@ function NotFound() {
   );
 }
 
-export default NotFound;
+export default NotFoundPage;

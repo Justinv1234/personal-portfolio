@@ -19,9 +19,7 @@ function ProjectDetail() {
 
   return (
     <div className="flex flex-col md:text-left text-center">
-      <h1 className="text-5xl font-semibold mb-10">
-        {project.title}.
-      </h1>
+      <h1 className="text-5xl font-semibold mb-10">{project.title}.</h1>
       <img
         src={project.websiteURL}
         alt="Project screenshot"

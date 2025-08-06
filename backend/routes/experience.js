@@ -4,10 +4,10 @@ module.exports = (pool) => {
 
     router.get("/", async (req, res) => {
         try {
-            const result = await pool.query("SELECT * FROM projects");
+            const result = await pool.query("SELECT * FROM experience");
             res.json(result.rows);
         } catch (err) {
-            console.error("Error fetching projects:", err);
+            console.error("Error fetching experience:", err);
             res.status(500).send("Server error");
         }
     });

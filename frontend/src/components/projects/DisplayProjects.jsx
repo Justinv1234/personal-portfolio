@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 function DisplayProjects({ featuredOnly }) {
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const slugify = (text) =>
     text
@@ -12,12 +14,15 @@ function DisplayProjects({ featuredOnly }) {
 
   useEffect(() => {
     const fetchProjects = async () => {
+      setLoading(true);
       try {
         const res = await fetch("http://localhost:3000/api/projects");
         const data = await res.json();
         setProjects(data);
       } catch (err) {
         console.error("Failed to fetch projects:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -27,6 +32,8 @@ function DisplayProjects({ featuredOnly }) {
   const filteredProjects = projects.filter(
     (project) => project.is_featured || !featuredOnly
   );
+
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="px-8 mt-10">

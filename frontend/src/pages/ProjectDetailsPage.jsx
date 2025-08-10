@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NotFound from "./NotFoundPage";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 function ProjectDetail() {
   const { slug } = useParams();
@@ -9,6 +10,7 @@ function ProjectDetail() {
 
   useEffect(() => {
     const fetchProject = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`http://localhost:3000/api/projects/${slug}`);
         if (!res.ok) {
@@ -28,7 +30,7 @@ function ProjectDetail() {
     fetchProject();
   }, [slug]);
 
-  if (loading) return <div className="text-center mt-10">Loading...</div>;
+  if (loading) return <LoadingSpinner />;
   if (!project) return <NotFound />;
 
   return (

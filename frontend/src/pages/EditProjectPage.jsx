@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProjectForm from "../components/projects/ProjectForm";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 function EditProjectPage() {
   const { id } = useParams();
   const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProject = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`http://localhost:3000/api/projects`);
         const projects = await res.json();
@@ -15,6 +18,8 @@ function EditProjectPage() {
         setProject(projectToEdit);
       } catch (err) {
         console.error("Failed to fetch project:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -37,7 +42,7 @@ function EditProjectPage() {
     }
   };
 
-  if (!project) return <div>Loading...</div>;
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div>

@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 function AdminPage() {
   const [projects, setProjects] = useState([]);
   const [timelineEvents, setTimelineEvents] = useState([]);
   const [contacts, setContacts] = useState([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [loadingTimeline, setLoadingTimeline] = useState(true);
+  const [loadingContacts, setLoadingContacts] = useState(true);
   const navigate = useNavigate();
 
   const fetchProjects = async () => {
+    setLoadingProjects(true);
     try {
       const res = await fetch("http://localhost:3000/api/projects");
       if (res.status === 401) return navigate("/login");
@@ -16,10 +21,13 @@ function AdminPage() {
       setProjects(data);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoadingProjects(false);
     }
   };
 
   const fetchTimelineEvents = async () => {
+    setLoadingTimeline(true);
     try {
       const res = await fetch("http://localhost:3000/api/timeline");
       if (res.status === 401) return navigate("/login");
@@ -28,10 +36,13 @@ function AdminPage() {
       setTimelineEvents(data);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoadingTimeline(false);
     }
   };
 
   const fetchContacts = async () => {
+    setLoadingContacts(true);
     const token = localStorage.getItem("token");
     try {
       const res = await fetch("http://localhost:3000/api/contact", {
@@ -43,6 +54,8 @@ function AdminPage() {
       setContacts(data);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoadingContacts(false);
     }
   };
 
@@ -110,34 +123,38 @@ function AdminPage() {
             </button>
           </Link>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              className="rounded-xl border border-gray-700 p-6 flex flex-col justify-between"
-            >
-              <div>
-                <h2 className="text-xl font-bold">{project.title}</h2>
-                <p className="text-xs text-gray-400 mt-2">
-                  {project.description}
-                </p>
-              </div>
-              <div className="flex justify-end gap-2 mt-4">
-                <Link to={`/admin/projects/edit/${project.id}`}>
-                  <button className="bg-gray-600 rounded-md px-3 py-1 text-white text-sm hover:bg-gray-700">
-                    Edit
+        {loadingProjects ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {projects.map((project) => (
+              <div
+                key={project.id}
+                className="rounded-xl border border-gray-700 p-6 flex flex-col justify-between"
+              >
+                <div>
+                  <h2 className="text-xl font-bold">{project.title}</h2>
+                  <p className="text-xs text-gray-400 mt-2">
+                    {project.description}
+                  </p>
+                </div>
+                <div className="flex justify-end gap-2 mt-4">
+                  <Link to={`/admin/projects/edit/${project.id}`}>
+                    <button className="bg-gray-600 rounded-md px-3 py-1 text-white text-sm hover:bg-gray-700">
+                      Edit
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => handleProjectDelete(project.id)}
+                    className="bg-red-500 rounded-md px-3 py-1 text-white text-sm hover:bg-red-600"
+                  >
+                    Delete
                   </button>
-                </Link>
-                <button
-                  onClick={() => handleProjectDelete(project.id)}
-                  className="bg-red-500 rounded-md px-3 py-1 text-white text-sm hover:bg-red-600"
-                >
-                  Delete
-                </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section>
@@ -149,75 +166,83 @@ function AdminPage() {
             </button>
           </Link>
         </div>
-        <div className="grid grid-cols-1 gap-4">
-          {timelineEvents.map((event) => (
-            <div
-              key={event.id}
-              className="rounded-xl border border-gray-700 p-6 flex justify-between items-center"
-            >
-              <div>
-                <h2 className="text-xl font-bold">{event.title}</h2>
-                <p className="text-xs text-gray-400 mt-2 capitalize">
-                  {event.position} ({event.event_type})
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <Link to={`/admin/timeline/edit/${event.id}`}>
-                  <button className="bg-gray-600 rounded-md px-3 py-1 text-white text-sm hover:bg-gray-700">
-                    Edit
+        {loadingTimeline ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="grid grid-cols-1 gap-4">
+            {timelineEvents.map((event) => (
+              <div
+                key={event.id}
+                className="rounded-xl border border-gray-700 p-6 flex justify-between items-center"
+              >
+                <div>
+                  <h2 className="text-xl font-bold">{event.title}</h2>
+                  <p className="text-xs text-gray-400 mt-2 capitalize">
+                    {event.position} ({event.event_type})
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Link to={`/admin/timeline/edit/${event.id}`}>
+                    <button className="bg-gray-600 rounded-md px-3 py-1 text-white text-sm hover:bg-gray-700">
+                      Edit
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => handleTimelineDelete(event.id)}
+                    className="bg-red-500 rounded-md px-3 py-1 text-white text-sm hover:bg-red-600"
+                  >
+                    Delete
                   </button>
-                </Link>
-                <button
-                  onClick={() => handleTimelineDelete(event.id)}
-                  className="bg-red-500 rounded-md px-3 py-1 text-white text-sm hover:bg-red-600"
-                >
-                  Delete
-                </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section>
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-4xl font-semibold">Manage Contacts.</h1>
         </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse border border-gray-700">
-            <thead>
-              <tr>
-                <th className="border border-gray-600 px-4 py-2">Name</th>
-                <th className="border border-gray-600 px-4 py-2">Email</th>
-                <th className="border border-gray-600 px-4 py-2">Message</th>
-                <th className="border border-gray-600 px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {contacts.map((contact) => (
-                <tr key={contact.id}>
-                  <td className="border border-gray-600 px-4 py-2">
-                    {contact.name}
-                  </td>
-                  <td className="border border-gray-600 px-4 py-2">
-                    {contact.email}
-                  </td>
-                  <td className="border border-gray-600 px-4 py-2">
-                    {contact.message}
-                  </td>
-                  <td className="border border-gray-600 px-4 py-2 text-center">
-                    <button
-                      onClick={() => handleContactDelete(contact.id)}
-                      className="bg-red-500 rounded-md px-3 py-1 text-white text-sm hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
-                  </td>
+        {loadingContacts ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full border-collapse border border-gray-700">
+              <thead>
+                <tr>
+                  <th className="border border-gray-600 px-4 py-2">Name</th>
+                  <th className="border border-gray-600 px-4 py-2">Email</th>
+                  <th className="border border-gray-600 px-4 py-2">Message</th>
+                  <th className="border border-gray-600 px-4 py-2">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {contacts.map((contact) => (
+                  <tr key={contact.id}>
+                    <td className="border border-gray-600 px-4 py-2">
+                      {contact.name}
+                    </td>
+                    <td className="border border-gray-600 px-4 py-2">
+                      {contact.email}
+                    </td>
+                    <td className="border border-gray-600 px-4 py-2">
+                      {contact.message}
+                    </td>
+                    <td className="border border-gray-600 px-4 py-2 text-center">
+                      <button
+                        onClick={() => handleContactDelete(contact.id)}
+                        className="bg-red-500 rounded-md px-3 py-1 text-white text-sm hover:bg-red-600"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
     </div>
   );

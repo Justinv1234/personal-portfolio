@@ -28,7 +28,7 @@ function TimelineEventForm({ event: initialEvent, onSave }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(event);
-    navigate("/admin/timeline");
+    navigate("/admin");
   };
 
   return (
@@ -132,7 +132,7 @@ function TimelineEventForm({ event: initialEvent, onSave }) {
       <div className="flex justify-end gap-4">
         <button
           type="button"
-          onClick={() => navigate("/admin/timeline")}
+          onClick={() => navigate("/admin")}
           className="bg-gray-600 rounded-md px-4 py-2 text-white hover:bg-gray-700"
         >
           Cancel

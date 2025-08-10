@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import TimelineEventForm from "../components/timeline/TimelineEventForm";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 function EditTimelineEventPage() {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvent = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`http://localhost:3000/api/timeline/${id}`);
         const data = await res.json();
         setEvent(data);
       } catch (err) {
         console.error("Failed to fetch timeline event:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchEvent();
@@ -35,7 +40,7 @@ function EditTimelineEventPage() {
     }
   };
 
-  if (!event) return <div>Loading...</div>;
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div>

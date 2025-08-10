@@ -1,6 +1,6 @@
-// frontend/src/components/home/Timeline.jsx
 import { useEffect, useState } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 function TimelineFormatter({ information }) {
   return information.map((info, i) => (
@@ -42,15 +42,19 @@ function TimelineFormatter({ information }) {
 
 function Timeline() {
   const [timelineData, setTimelineData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTimelineData = async () => {
+      setLoading(true);
       try {
         const res = await fetch("http://localhost:3000/api/timeline");
         const data = await res.json();
         setTimelineData(data);
       } catch (err) {
         console.error("Failed to fetch timeline data:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -63,6 +67,8 @@ function Timeline() {
   const education = timelineData.filter(
     (item) => item.event_type === "education"
   );
+
+  if (loading) return <LoadingSpinner />;
 
   return (
     <Tabs.Root

@@ -48,7 +48,7 @@ function Timeline() {
     const fetchTimelineData = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:3000/api/timeline");
+        const res = await fetch("/api/timeline");
         const data = await res.json();
         setTimelineData(data);
       } catch (err) {

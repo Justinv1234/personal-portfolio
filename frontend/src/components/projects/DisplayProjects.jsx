@@ -16,7 +16,7 @@ function DisplayProjects({ featuredOnly }) {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:3000/api/projects");
+        const res = await fetch("/api/projects");
         const data = await res.json();
         setProjects(data);
       } catch (err) {

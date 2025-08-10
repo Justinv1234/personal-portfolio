@@ -4,7 +4,7 @@ function AddProjectPage() {
   const handleSave = async (project) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch("http://localhost:3000/api/projects", {
+      await fetch("/api/projects", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

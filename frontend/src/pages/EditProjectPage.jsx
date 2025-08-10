@@ -12,7 +12,7 @@ function EditProjectPage() {
     const fetchProject = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:3000/api/projects`);
+        const res = await fetch(`/api/projects`);
         const projects = await res.json();
         const projectToEdit = projects.find((p) => p.id === parseInt(id));
         setProject(projectToEdit);
@@ -29,7 +29,7 @@ function EditProjectPage() {
   const handleSave = async (updatedProject) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:3000/api/projects/${id}`, {
+      await fetch(`/api/projects/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

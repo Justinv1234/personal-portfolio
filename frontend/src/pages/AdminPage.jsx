@@ -14,7 +14,7 @@ function AdminPage() {
   const fetchProjects = async () => {
     setLoadingProjects(true);
     try {
-      const res = await fetch("http://localhost:3000/api/projects");
+      const res = await fetch("/api/projects");
       if (res.status === 401) return navigate("/login");
       if (!res.ok) throw new Error("Failed to fetch projects");
       const data = await res.json();
@@ -29,7 +29,7 @@ function AdminPage() {
   const fetchTimelineEvents = async () => {
     setLoadingTimeline(true);
     try {
-      const res = await fetch("http://localhost:3000/api/timeline");
+      const res = await fetch("/api/timeline");
       if (res.status === 401) return navigate("/login");
       if (!res.ok) throw new Error("Failed to fetch timeline events");
       const data = await res.json();
@@ -45,7 +45,7 @@ function AdminPage() {
     setLoadingContacts(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:3000/api/contact", {
+      const res = await fetch("/api/contact", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.status === 401) return navigate("/login");
@@ -69,7 +69,7 @@ function AdminPage() {
     if (window.confirm("Are you sure you want to delete this project?")) {
       const token = localStorage.getItem("token");
       try {
-        await fetch(`http://localhost:3000/api/projects/${id}`, {
+        await fetch(`/api/projects/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -86,7 +86,7 @@ function AdminPage() {
     ) {
       const token = localStorage.getItem("token");
       try {
-        await fetch(`http://localhost:3000/api/timeline/${id}`, {
+        await fetch(`/api/timeline/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -101,7 +101,7 @@ function AdminPage() {
     if (window.confirm("Are you sure you want to delete this contact?")) {
       const token = localStorage.getItem("token");
       try {
-        await fetch(`http://localhost:3000/api/contact/${id}`, {
+        await fetch(`/api/contact/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });

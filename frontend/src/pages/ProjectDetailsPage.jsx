@@ -12,7 +12,7 @@ function ProjectDetail() {
     const fetchProject = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:3000/api/projects/${slug}`);
+        const res = await fetch(`/api/projects/${slug}`);
         if (!res.ok) {
           setProject(null);
         } else {

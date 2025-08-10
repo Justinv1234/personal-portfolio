@@ -12,7 +12,7 @@ function EditTimelineEventPage() {
     const fetchEvent = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:3000/api/timeline/${id}`);
+        const res = await fetch(`/api/timeline/${id}`);
         const data = await res.json();
         setEvent(data);
       } catch (err) {
@@ -27,7 +27,7 @@ function EditTimelineEventPage() {
   const handleSave = async (updatedEvent) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:3000/api/timeline/${id}`, {
+      await fetch(`/api/timeline/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

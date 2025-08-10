@@ -1,5 +1,6 @@
+// frontend/src/components/home/Timeline.jsx
+import { useEffect, useState } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
-import { timelineData } from "../../data/TimelineData";
 
 function TimelineFormatter({ information }) {
   return information.map((info, i) => (
@@ -8,7 +9,7 @@ function TimelineFormatter({ information }) {
         <div className="bg-transparent flex flex-col items-center z-10">
           <img
             className="rounded-full border border-gray-600"
-            src={info.iconPath}
+            src={info.icon_path}
             alt="logo"
             height={46}
             width={46}
@@ -17,7 +18,7 @@ function TimelineFormatter({ information }) {
 
         <div className="bg-transparent flex flex-col w-[90%] pl-4">
           <h3 className="bg-transparent text-xs font-extralight text-gray-400">
-            {info.startDate} - {info.endDate || "Present"}
+            {info.start_date} - {info.end_date || "Present"}
           </h3>
           <h1 className="bg-transparent font-bold text-white">{info.title}</h1>
           <h2 className="bg-transparent text-sm font-normal text-gray-300">
@@ -40,8 +41,28 @@ function TimelineFormatter({ information }) {
 }
 
 function Timeline() {
-  const experience = timelineData.filter((item) => item.type === "experience");
-  const education = timelineData.filter((item) => item.type === "education");
+  const [timelineData, setTimelineData] = useState([]);
+
+  useEffect(() => {
+    const fetchTimelineData = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/timeline");
+        const data = await res.json();
+        setTimelineData(data);
+      } catch (err) {
+        console.error("Failed to fetch timeline data:", err);
+      }
+    };
+
+    fetchTimelineData();
+  }, []);
+
+  const experience = timelineData.filter(
+    (item) => item.event_type === "experience"
+  );
+  const education = timelineData.filter(
+    (item) => item.event_type === "education"
+  );
 
   return (
     <Tabs.Root

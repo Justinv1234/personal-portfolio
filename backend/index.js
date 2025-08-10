@@ -1,4 +1,3 @@
-// index.js
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
@@ -18,14 +17,12 @@ const pool = new Pool({
 
 // Routes
 const projectsRoute = require("./routes/projects")(pool);
-const experienceRoute = require("./routes/experience")(pool);
-const educationRoute = require("./routes/education")(pool);
+const timelineRoute = require("./routes/timeline")(pool);
 const contactRoute = require("./routes/contact")(pool);
 const authRoute = require("./routes/auth")(pool);
 
 app.use("/api/projects", projectsRoute);
-app.use("/api/experience", experienceRoute);
-app.use("/api/education", educationRoute);
+app.use("/api/timeline", timelineRoute);
 app.use("/api/contact", contactRoute);
 app.use("/api/auth", authRoute);
 

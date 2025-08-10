@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 function AdminPage() {
   const [projects, setProjects] = useState([]);
   const [timelineEvents, setTimelineEvents] = useState([]);
+  const [contacts, setContacts] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch Projects
   const fetchProjects = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/projects");
@@ -19,7 +19,6 @@ function AdminPage() {
     }
   };
 
-  // Fetch Timeline Events
   const fetchTimelineEvents = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/timeline");
@@ -32,12 +31,27 @@ function AdminPage() {
     }
   };
 
+  const fetchContacts = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch("http://localhost:3000/api/contact", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.status === 401) return navigate("/login");
+      if (!res.ok) throw new Error("Failed to fetch contacts");
+      const data = await res.json();
+      setContacts(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchProjects();
     fetchTimelineEvents();
-  }, []);
+    fetchContacts();
+  }, [navigate]);
 
-  // Handlers for Deleting Projects
   const handleProjectDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this project?")) {
       const token = localStorage.getItem("token");
@@ -46,14 +60,13 @@ function AdminPage() {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
-        fetchProjects(); // Refresh list
+        fetchProjects();
       } catch (err) {
         console.error("Failed to delete project:", err);
       }
     }
   };
 
-  // Handlers for Deleting Timeline Events
   const handleTimelineDelete = async (id) => {
     if (
       window.confirm("Are you sure you want to delete this timeline event?")
@@ -64,16 +77,30 @@ function AdminPage() {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
-        fetchTimelineEvents(); // Refresh list
+        fetchTimelineEvents();
       } catch (err) {
         console.error("Failed to delete timeline event:", err);
       }
     }
   };
 
+  const handleContactDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this contact?")) {
+      const token = localStorage.getItem("token");
+      try {
+        await fetch(`http://localhost:3000/api/contact/${id}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        fetchContacts();
+      } catch (err) {
+        console.error("Failed to delete contact:", err);
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col gap-12">
-      {/* Projects Section */}
       <section>
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-4xl font-semibold">Manage Projects.</h1>
@@ -113,7 +140,6 @@ function AdminPage() {
         </div>
       </section>
 
-      {/* Timeline Section */}
       <section>
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-4xl font-semibold">Manage Timeline.</h1>
@@ -150,6 +176,47 @@ function AdminPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section>
+        <div className="flex justify-between items-center mb-10">
+          <h1 className="text-4xl font-semibold">Manage Contacts.</h1>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse border border-gray-700">
+            <thead>
+              <tr>
+                <th className="border border-gray-600 px-4 py-2">Name</th>
+                <th className="border border-gray-600 px-4 py-2">Email</th>
+                <th className="border border-gray-600 px-4 py-2">Message</th>
+                <th className="border border-gray-600 px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contacts.map((contact) => (
+                <tr key={contact.id}>
+                  <td className="border border-gray-600 px-4 py-2">
+                    {contact.name}
+                  </td>
+                  <td className="border border-gray-600 px-4 py-2">
+                    {contact.email}
+                  </td>
+                  <td className="border border-gray-600 px-4 py-2">
+                    {contact.message}
+                  </td>
+                  <td className="border border-gray-600 px-4 py-2 text-center">
+                    <button
+                      onClick={() => handleContactDelete(contact.id)}
+                      className="bg-red-500 rounded-md px-3 py-1 text-white text-sm hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
     </div>

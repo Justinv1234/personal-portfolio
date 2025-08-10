@@ -56,12 +56,11 @@ module.exports = (pool) => {
     router.put("/:id", authMiddleware, async (req, res) => {
         const { id } = req.params;
         const { title, description, long_description, website_url, image_urls, tags, is_featured } = req.body;
-        const slug = slugify(title);
 
         try {
             const result = await pool.query(
-                "UPDATE projects SET title = $1, slug = $2, description = $3, long_description = $4, website_url = $5, image_urls = $6, tags = $7, is_featured = $8 WHERE id = $9 RETURNING *",
-                [title, slug, description, long_description, website_url, image_urls, tags, is_featured, id]
+                "UPDATE projects SET title = $1, description = $2, long_description = $3, website_url = $4, image_urls = $5, tags = $6, is_featured = $7 WHERE id = $8 RETURNING *",
+                [title, description, long_description, website_url, image_urls, tags, is_featured, id]
             );
 
             if (result.rows.length === 0) {

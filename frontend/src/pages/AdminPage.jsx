@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function AdminPage() {
   const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  const navigate = useNavigate();
 
   const fetchProjects = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/projects");
+      if (res.status === 401) {
+        navigate("/login");
+        return;
+      }
+      if (!res.ok) {
+        throw new Error("Failed to fetch projects");
+      }
       const data = await res.json();
       setProjects(data);
     } catch (err) {
@@ -18,16 +22,34 @@ function AdminPage() {
     }
   };
 
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this project?")) {
       try {
         const token = localStorage.getItem("token");
-        await fetch(`http://localhost:3000/api/projects/${id}`, {
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+        const res = await fetch(`http://localhost:3000/api/projects/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        if (res.status === 401) {
+          navigate("/login");
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error("Failed to delete project");
+        }
+
         fetchProjects();
       } catch (err) {
         console.error("Failed to delete project:", err);

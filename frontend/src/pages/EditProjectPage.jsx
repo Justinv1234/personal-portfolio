@@ -1,0 +1,50 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import ProjectForm from "../components/projects/ProjectForm";
+
+function EditProjectPage() {
+  const { id } = useParams();
+  const [project, setProject] = useState(null);
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/api/projects`);
+        const projects = await res.json();
+        const projectToEdit = projects.find((p) => p.id === parseInt(id));
+        setProject(projectToEdit);
+      } catch (err) {
+        console.error("Failed to fetch project:", err);
+      }
+    };
+
+    fetchProject();
+  }, [id]);
+
+  const handleSave = async (updatedProject) => {
+    try {
+      const token = localStorage.getItem("token");
+      await fetch(`http://localhost:3000/api/projects/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedProject),
+      });
+    } catch (err) {
+      console.error("Failed to update project:", err);
+    }
+  };
+
+  if (!project) return <div>Loading...</div>;
+
+  return (
+    <div>
+      <h1 className="text-5xl font-semibold mb-10">Edit Project.</h1>
+      <ProjectForm project={project} onSave={handleSave} />
+    </div>
+  );
+}
+
+export default EditProjectPage;

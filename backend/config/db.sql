@@ -1,6 +1,13 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL
+);
+
 CREATE TABLE projects (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
     description TEXT NOT NULL,
     long_description TEXT NOT NULL,
     website_url TEXT,

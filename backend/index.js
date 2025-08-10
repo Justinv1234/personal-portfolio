@@ -21,11 +21,13 @@ const projectsRoute = require("./routes/projects")(pool);
 const experienceRoute = require("./routes/experience")(pool);
 const educationRoute = require("./routes/education")(pool);
 const contactRoute = require("./routes/contact")(pool);
+const authRoute = require("./routes/auth")(pool);
 
 app.use("/api/projects", projectsRoute);
 app.use("/api/experience", experienceRoute);
 app.use("/api/education", educationRoute);
 app.use("/api/contact", contactRoute);
+app.use("/api/auth", authRoute);
 
 app.listen(3000, () => {
     console.log("Server is running at http://localhost:3000");

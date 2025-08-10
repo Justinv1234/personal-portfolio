@@ -4,7 +4,7 @@ function AddTimelineEventPage() {
   const handleSave = async (event) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch("http://localhost:3000/api/timeline", {
+      await fetch("/api/timeline", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

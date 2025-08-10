@@ -26,6 +26,10 @@ app.use("/api/timeline", timelineRoute);
 app.use("/api/contact", contactRoute);
 app.use("/api/auth", authRoute);
 
-app.listen(3000, () => {
-    console.log("Server is running at http://localhost:3000");
-});
+module.exports = app;
+
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(3000, () => {
+        console.log("Server is running at http://localhost:3000");
+    });
+}

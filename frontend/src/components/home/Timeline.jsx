@@ -1,5 +1,5 @@
 import * as Tabs from "@radix-ui/react-tabs";
-import { experienceData, educationData } from "../../data/TimelineData";
+import { timelineData } from "../../data/TimelineData";
 
 function TimelineFormatter({ information }) {
   return information.map((info, i) => (
@@ -40,6 +40,9 @@ function TimelineFormatter({ information }) {
 }
 
 function Timeline() {
+  const experience = timelineData.filter((item) => item.type === "experience");
+  const education = timelineData.filter((item) => item.type === "education");
+
   return (
     <Tabs.Root
       className="flex flex-col border border-gray-700 rounded-md w-full"
@@ -65,7 +68,7 @@ function Timeline() {
         value="tab1"
       >
         <div className="absolute top-0 bottom-0 left-[35px] w-[2px] bg-gray-600"></div>
-        <TimelineFormatter information={experienceData} />
+        <TimelineFormatter information={experience} />
       </Tabs.Content>
 
       <Tabs.Content
@@ -73,7 +76,7 @@ function Timeline() {
         value="tab2"
       >
         <div className="absolute top-0 bottom-0 left-[35px] w-[2px] bg-gray-600"></div>
-        <TimelineFormatter information={educationData} />
+        <TimelineFormatter information={education} />
       </Tabs.Content>
     </Tabs.Root>
   );

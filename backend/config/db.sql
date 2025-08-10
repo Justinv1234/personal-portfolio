@@ -16,24 +16,17 @@ CREATE TABLE projects (
     is_featured BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE experience (
-    id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL,
-    start_date TEXT,
-    end_date TEXT,
-    position TEXT NOT NULL,
-    icon_path TEXT,
-    description TEXT[]
-);
+CREATE TYPE event_type AS ENUM ('experience', 'education');
 
-CREATE TABLE education (
+CREATE TABLE timeline_events (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     start_date TEXT,
     end_date TEXT,
     position TEXT,
     icon_path TEXT,
-    description TEXT[]
+    description TEXT[],
+    event_type event_type NOT NULL
 );
 
 CREATE TABLE contacts (

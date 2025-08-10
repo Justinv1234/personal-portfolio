@@ -1,6 +1,6 @@
 import Introduction from "../components/home/Introduction";
 import Socials from "../components/home/Socials";
-import Timeline from "../components/home/Timeline"
+import Timeline from "../components/home/Timeline";
 import DisplayProjects from "../components/projects/DisplayProjects";
 
 function HomePage() {
@@ -20,7 +20,7 @@ function HomePage() {
         <h1 className="text-2xl text-center sm:text-3xl  sm:text-left">
           Featured Projects.
         </h1>
-        <DisplayProjects featuredOnly={false} />
+        <DisplayProjects featuredOnly={true} />
       </section>
     </main>
   );
